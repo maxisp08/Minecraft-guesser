@@ -395,10 +395,78 @@
   .podium b{display:block;font-family:var(--font-display);font-size:2.4rem;font-weight:400;line-height:1}
   .podium .n{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .podium .p1{background:#f2b134;height:150px} .podium .p2{background:#c9ced8;height:120px} .podium .p3{background:#c9874f;height:96px}
-  .mpcd{position:fixed;inset:0;z-index:45;display:grid;place-items:center;background:rgba(10,8,16,.55);pointer-events:none}
+  /* Start animation */
+  .mpcd{position:fixed;inset:0;z-index:45;display:grid;place-items:center;overflow:hidden;pointer-events:none;
+    background:radial-gradient(circle at 50% 45%, #3a2560 0%, #1a1228 45%, #0a0810 80%);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);animation:cdIn .35s ease both}
   .mpcd[hidden]{display:none}
-  .mpcd b{font-family:var(--font-display);font-weight:400;font-size:11rem;line-height:1;color:#cfaefc;text-shadow:8px 8px 0 #3d2563;animation:pop .3s ease}
-  .mpcd span{display:block;text-align:center;font-family:var(--font-display);font-size:1.8rem;color:#e8ebf0}
+  .mpcd::before{content:"";position:absolute;inset:-60px;background:repeating-linear-gradient(45deg, rgba(255,255,255,.035) 0 22px, transparent 22px 44px);
+    animation:cdStripes 1.4s linear infinite}
+  .mpcd.out{animation:cdOut .5s ease forwards}
+  .cd-box{position:relative;text-align:center;width:min(760px,92vw)}
+  .cd-mode{font-family:var(--font-display);font-size:1.7rem;letter-spacing:.08em;color:#cfaefc;text-transform:uppercase;text-shadow:3px 3px 0 #3d2563;
+    animation:cdDrop .55s cubic-bezier(.2,1.4,.4,1) both}
+  .cd-sub{color:var(--muted);font-size:.95rem;margin-top:2px;animation:cdDrop .55s .1s cubic-bezier(.2,1.4,.4,1) both}
+  .cd-vs{display:flex;align-items:center;justify-content:center;gap:10px 12px;flex-wrap:wrap;margin:22px 0 6px;min-height:52px}
+  .cd-p{display:flex;align-items:center;gap:8px;padding:8px 14px;background:#15171c;border:2px solid #0b0d10;border-radius:8px;font-weight:800;font-size:1.05rem;
+    box-shadow:inset 3px 3px 0 rgba(255,255,255,.08), inset -3px -3px 0 rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.4);animation:cdSlideL .6s cubic-bezier(.2,1.3,.4,1) both;max-width:44vw}
+  .cd-p.r{animation-name:cdSlideR}
+  .cd-p span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .cd-p i{flex:0 0 22px;height:22px;border-radius:4px;box-shadow:inset -3px -3px 0 rgba(0,0,0,.3), inset 3px 3px 0 rgba(255,255,255,.3)}
+  .cd-p.me{border-color:var(--amy)}
+  .cd-x{font-family:var(--font-display);font-size:2.4rem;line-height:1;color:#ff6b5c;text-shadow:3px 3px 0 #5a1712;animation:cdPop .5s .35s cubic-bezier(.2,1.8,.4,1) both, cdPulse .7s 1s ease-in-out infinite alternate}
+  .cd-ffa{flex-basis:100%;font-family:var(--font-display);font-size:1.5rem;color:#ff6b5c;text-shadow:3px 3px 0 #5a1712}
+  #cdNum{height:13rem;display:grid;place-items:center}
+  #cdNum > *{grid-area:1/1}
+  #cdNum .leave{animation:cdLeave .45s cubic-bezier(.4,0,.2,1) forwards}
+  .cd-num.leave::after{display:none}
+  .cd-num{position:relative;font-family:var(--font-display);font-size:13rem;line-height:1;color:var(--c,#fff);
+    text-shadow:8px 8px 0 rgba(0,0,0,.55), 0 0 42px var(--c);animation:cdNum .55s cubic-bezier(.16,1,.3,1) both;will-change:transform,opacity}
+  .cd-num::after{content:"";position:absolute;left:50%;top:50%;width:150px;height:150px;margin:-75px 0 0 -75px;border:7px solid var(--c);border-radius:14px;
+    animation:cdWave .9s cubic-bezier(.16,1,.3,1) both;pointer-events:none}
+  .cd-num.go{font-size:11rem;letter-spacing:.04em}
+  .cd-ready{font-family:var(--font-display);font-size:4.2rem;color:#e8ebf0;text-shadow:5px 5px 0 #000a;animation:cdPulse .45s ease-in-out infinite alternate}
+  .cd-bar{height:12px;background:#22252c;border:2px solid #0b0d10;border-radius:4px;overflow:hidden;width:min(440px,80vw);margin:6px auto 0}
+  .cd-bar i{display:block;height:100%;background:repeating-linear-gradient(90deg,var(--amy) 0 12px,#9a63e0 12px 14px);transition:width .1s linear}
+  .cd-tip{margin-top:12px;color:var(--muted);font-size:.9rem}
+  .cd-flash{position:fixed;inset:0;background:#7fd67a;animation:cdFlash .55s ease-out forwards}
+  @keyframes cdIn{from{opacity:0}to{opacity:1}}
+  @keyframes cdOut{to{opacity:0;transform:scale(1.08)}}
+  @keyframes cdStripes{to{transform:translateX(62px)}}
+  @keyframes cdDrop{from{opacity:0;transform:translateY(-40px)}to{opacity:1;transform:none}}
+  @keyframes cdSlideL{from{opacity:0;transform:translateX(-70vw) rotate(-8deg)}to{opacity:1;transform:none}}
+  @keyframes cdSlideR{from{opacity:0;transform:translateX(70vw) rotate(8deg)}to{opacity:1;transform:none}}
+  @keyframes cdPop{from{opacity:0;transform:scale(3)}to{opacity:1;transform:none}}
+  @keyframes cdPulse{to{transform:scale(1.12)}}
+  @keyframes cdNum{from{opacity:0;transform:scale(1.7);filter:blur(6px)}to{opacity:1;transform:none;filter:blur(0)}}
+  @keyframes cdLeave{to{opacity:0;transform:scale(.55);filter:blur(4px)}}
+  @keyframes cdWave{from{opacity:.8;transform:scale(.5)}to{opacity:0;transform:scale(2.6)}}
+  @keyframes cdFlash{from{opacity:.55}to{opacity:0}}
+  @media (max-width:700px){ .cd-num{font-size:9rem} .cd-num.go{font-size:8rem} #cdNum{height:9.5rem} .cd-ready{font-size:3rem} .cd-mode{font-size:1.35rem} }
+
+  /* Battle stats */
+  .bs-toggle{margin-top:14px;width:100%;text-align:left;display:flex;justify-content:space-between;align-items:center}
+  .bs{margin-top:10px;display:flex;flex-direction:column;gap:12px}
+  .bs-tiles{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+  .bs-tiles .stat .v{font-size:2.3rem} .bs-tiles .stat .l{font-size:.95rem}
+  .bs-best{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  .bs-card{background:#15171c;border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+  .bs-card b{display:block;font-family:var(--font-display);font-weight:400;font-size:1.25rem;color:#cfaefc;margin-bottom:4px}
+  .bs-card div{display:flex;justify-content:space-between;gap:8px;font-size:.85rem;color:var(--muted)}
+  .bs-card div span:last-child{color:var(--text);font-weight:700;font-variant-numeric:tabular-nums}
+  .bs-h2h{display:flex;flex-direction:column;gap:6px}
+  .h2h{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;align-items:center;background:#15171c;border:1px solid var(--line);border-radius:10px;padding:8px 12px}
+  .h2h .nm{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .h2h .sc{font-family:var(--font-display);font-size:1.5rem;line-height:1}
+  .h2h .sc .w{color:#7fd67a} .h2h .sc .l{color:#ff6b5c}
+  .h2h .bar{grid-column:1/-1;height:8px;border-width:1px;background:#5a2a26}
+  .h2h .bar i{background:#46a955}
+  .bs-last{display:flex;flex-wrap:wrap;gap:6px}
+  .bs-last span{font-size:.78rem;padding:4px 8px;border-radius:999px;background:#262a33;color:var(--muted);font-weight:600}
+  .bs-last span.w{background:rgba(242,177,52,.18);color:var(--accent)}
+  .bs-foot{display:flex;justify-content:flex-end}
+  .bs-foot button{font-size:.8rem;background:transparent;color:#f0a59f;border-color:rgba(180,66,58,.45)}
+  .mp-rec{margin-top:8px;padding:8px 12px;border-radius:10px;background:rgba(176,124,240,.12);border:1px solid rgba(176,124,240,.4);font-weight:600;font-size:.9rem}
+  @media (max-width:700px){ .bs-tiles{grid-template-columns:repeat(2,minmax(0,1fr))} .bs-tiles .stat.wide{grid-column:1/-1} .bs-best{grid-template-columns:1fr} }
   .livebar.mp-live{border-color:var(--amy)}
   .livebar.mp-live .bar i{background:var(--amy)}
   .livebar .lrank{font-family:var(--font-display);font-size:1.3rem;line-height:1;color:#cfaefc;white-space:nowrap}
@@ -547,7 +615,7 @@
     <li><b>🎲 Just guess</b> – free play without a timer. The search bar is green.</li>
     <li><b>⏱ Competition</b> – Time limit: as many as possible before the timer ends. Target count: a set number as fast as possible. Choose All or one area. Results are kept in 📜 History. The search bar turns gold.</li>
     <li><b>🎯 Challenges</b> – Easy 3, Medium 5, Hard 8 correct in 10 minutes. All 3 hints are allowed. Grade by time used: S ≤ 30 % · A ≤ 45 % · B ≤ 60 % · C ≤ 75 % · D in time · F not finished. The search bar turns turquoise.</li>
-    <li><b>⚔️ Multiplayer</b> – create a lobby, share the 4-letter code, and play live against up to 7 friends. Everyone gets the same answers in the same order. 🏁 Race: first to X correct · ⏱ Time limit: most correct · ⛳ Fewest tries: fewest tries for X answers. Hints are off; ⏭ Skip gives a small penalty (Race +10 s · Time limit 5 s locked · Fewest tries +3). Friends just open the same website — no account needed. The search bar turns purple.</li>
+    <li><b>⚔️ Multiplayer</b> – create a lobby, share the 4-letter code, and play live against up to 7 friends. Everyone gets the same answers in the same order. 🏁 Race: first to X correct · ⏱ Time limit: most correct · ⛳ Fewest tries: fewest tries for X answers. Hints are off; ⏭ Skip gives a small penalty (Race +10 s · Time limit 5 s locked · Fewest tries +3). Friends just open the same website — no account needed. 📊 Battle stats (wins, records, head-to-head) are kept in this browser. The search bar turns purple.</li>
     <li><b>📊 Statistics</b> – streaks, win rate and averages per area, or All combined. Saved in this browser.</li>
   </ul>
   <details>
@@ -2016,6 +2084,7 @@ const MP_TYPES = {
 const MP_SKIP_RACE = 10000, MP_SKIP_LOCK = 5000, MP_SKIP_TRIES = 3;
 let room = null, roomState = "wait", mpTick = null, mpBoard = {}, mpJoinTimer = null;
 let myName = ""; try { myName = localStorage.getItem("mcg-mp-name") || ""; } catch(e) {}
+let bsOpen = false; try { bsOpen = !!localStorage.getItem("mcg-bs-open"); } catch(e) {}
 try { const s = JSON.parse(localStorage.getItem("mcg-mp-set")); if (s && MP_TYPES[s.type]) MP.set = {...MP.set, ...s}; } catch(e) {}
 const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 function mpActive(){ return MP.phase === "playing" || MP.phase === "countdown"; }
@@ -2097,12 +2166,14 @@ function mpJoin(){
   mpJoinTimer = setTimeout(() => { if (MP.phase === "joining"){ mpLeave(); MP.note = `Could not reach lobby "${code}". Check the code and your internet, then try again.`; renderMp(true); } }, 15000);
 }
 function mpLeave(){
+  if (MP.phase === "playing") mpFinish(true);        // leaving a running game = giving up
+  if (MP.phase === "done") mpTryRecord(true);
   if (mpActive()){ over = true; $("inp").disabled = false; }
   clearInterval(mpTick); clearTimeout(mpJoinTimer);
   mpClearPres();
   const wasPlaying = mpActive();
   MP = {phase:"off", set: MP.set, note:null};
-  mpBoard = {}; $("mpCd").hidden = true;
+  mpBoard = {}; clearTimeout(cdHideT); $("mpCd").hidden = true; $("mpCd").dataset.gid = "";
   if (wasPlaying) newRound();
   renderTabs(); renderHints(); renderMp(true); renderLive();
 }
@@ -2118,15 +2189,17 @@ function mpStart(){
   if (!MP.host) return;
   const now = Date.now();
   const game = {id: now.toString(36) + Math.floor(Math.random() * 1e4).toString(36), ...MP.set,
-                seed: Math.floor(Math.random() * 4294967296), startAt: now + 4000, sent: now};
+                seed: Math.floor(Math.random() * 4294967296), startAt: now + 5500, sent: now};
   MP.game = game; MP.seenGid = game.id;
   mpBegin(game, game.startAt);
 }
 function mpBegin(game, localStart){
+  mpTryRecord(true);                 // a result that is still open counts before the next game starts
+  MP.recMsg = null;
   if (COMP.running) stopComp(false);
   if (CHAL.running) finishChal(false);
   MP.g = {type: game.type, area: game.area, goal: game.goal, dur: game.dur};
-  MP.gid = game.id; MP.start = localStart; MP.phase = "countdown";
+  MP.gid = game.id; MP.start = localStart; MP.cdFrom = Date.now(); MP.phase = "countdown";
   MP.sv = 0; MP.tr = 0; MP.sk = 0; MP.pen = 0; MP.fin = null; MP.gu = null; MP.idx = 0; MP.lock = 0;
   MP.seq = []; MP.used = new Set(); MP.rng = mulberry32(game.seed); MP.won = false;
   mpBoard = {};
@@ -2141,13 +2214,10 @@ function mpUpdate(){
   if (MP.phase === "countdown"){
     const left = MP.start - now;
     if (left <= 0){
-      MP.phase = "playing"; $("mpCd").hidden = true;
+      MP.phase = "playing"; mpCdGo();
       over = true; newRound(); $("inp").disabled = false; $("inp").focus();
       mpPres(); renderTabs(); renderMp(true);
-    } else {
-      $("mpCd").hidden = false;
-      $("mpCd").innerHTML = `<div><span>${MP_TYPES[MP.g.type].icon} ${MP_TYPES[MP.g.type].name} · ${esc(MP_TYPES[MP.g.type].desc(MP.g))}</span><b>${Math.ceil(left / 1000)}</b></div>`;
-    }
+    } else mpCdRender(left);
   }
   if (MP.phase === "playing"){
     if (MP.g.type === "time" && now >= MP.start + MP.g.dur * 1000) return mpFinish(false);
@@ -2157,6 +2227,56 @@ function mpUpdate(){
     }
   }
   renderLive();
+}
+// ---- start animation: intro with the players, then 3 · 2 · 1 · GO! ----
+const CD_COLORS = {"3":"#ff6b5c", "2":"#f2b134", "1":"#5fd3d6"};
+let cdHideT = null;
+function mpCdPlayers(){
+  const list = [{nm: myName, cl: MP.color, me: true}];
+  mpPeers().forEach(p => { if (!p.sameTab) list.push({nm: String(p.presence.nm || "Player").slice(0, 16), cl: +p.presence.cl || 0}); });
+  return list;
+}
+function mpCdRender(left){
+  const el = $("mpCd"), T = MP_TYPES[MP.g.type];
+  clearTimeout(cdHideT); el.classList.remove("out"); el.hidden = false;
+  if (el.dataset.gid !== MP.gid){
+    el.dataset.gid = MP.gid; el.dataset.k = ""; el.dataset.np = "";
+    el.innerHTML = `<div class="cd-box"><div class="cd-mode">${T.icon} ${T.name}</div>
+      <div class="cd-sub">${esc(T.desc(MP.g))} · ${AREA_LABEL[MP.g.area]}</div>
+      <div class="cd-vs" id="cdVs"></div><div id="cdNum"></div>
+      <div class="cd-bar"><i id="cdBar"></i></div>
+      <div class="cd-tip">Hints off · ${esc(T.skip)}</div></div>`;
+  }
+  const ps = mpCdPlayers(), sig = ps.map(p => p.nm + "/" + p.cl).join("|");
+  if (el.dataset.np !== sig){
+    el.dataset.np = sig;
+    const chip = (p, i) => `<span class="cd-p${i % 2 ? " r" : ""}${p.me ? " me" : ""}" style="animation-delay:${i * 0.08}s"><i style="background:${MP_COLORS[p.cl] || MP_COLORS[0]}"></i><span>${esc(p.nm)}</span></span>`;
+    $("cdVs").innerHTML = ps.length === 2 ? chip(ps[0], 0) + `<span class="cd-x">VS</span>` + chip(ps[1], 1)
+      : (ps.length > 2 ? `<span class="cd-ffa">⚔️ Free for all · ${ps.length} players</span>` : "") + ps.map(chip).join("");
+  }
+  const k = left > 3000 ? "ready" : String(Math.ceil(left / 1000));
+  if (el.dataset.k !== k){
+    el.dataset.k = k;
+    mpCdSwap(k === "ready" ? `<div class="cd-ready">GET READY</div>` : `<div class="cd-num" style="--c:${CD_COLORS[k] || "#fff"}">${k}</div>`);
+  }
+  const total = Math.max(1, MP.start - MP.cdFrom);
+  $("cdBar").style.width = Math.max(0, Math.min(100, left / total * 100)) + "%";
+}
+// new number fades in while the old one shrinks away
+function mpCdSwap(html){
+  const box = $("cdNum"); if (!box) return;
+  [...box.children].forEach(old => { old.classList.add("leave"); setTimeout(() => old.remove(), 460); });
+  box.insertAdjacentHTML("beforeend", html);
+}
+function mpCdGo(){
+  const el = $("mpCd");
+  if (el.hidden || !$("cdNum")){ el.hidden = true; return; }
+  el.dataset.k = "go";
+  mpCdSwap(`<div class="cd-num go" style="--c:#7fd67a">GO!</div>`);
+  $("cdBar").style.width = "0%";
+  const f = document.createElement("div"); f.className = "cd-flash"; el.appendChild(f);
+  clearTimeout(cdHideT);
+  cdHideT = setTimeout(() => { el.classList.add("out"); cdHideT = setTimeout(() => { el.hidden = true; el.classList.remove("out"); el.dataset.gid = ""; }, 500); }, 550);
 }
 // a correct answer during a game
 function mpWin(){
@@ -2188,7 +2308,7 @@ function mpFinish(gaveUp){
   MP.fin = Math.max(0, Date.now() - MP.start) + (g.type === "race" ? MP.pen : 0);
   if (g.type === "time") MP.fin = g.dur * 1000;
   MP.gu = gaveUp || null;
-  $("mpCd").hidden = true;
+  clearTimeout(cdHideT); $("mpCd").hidden = true; $("mpCd").dataset.gid = "";
   if (!over){ over = true; hideSuggest(); render(); }
   $("inp").disabled = true;
   const msg = gaveUp ? `You left this game.`
@@ -2201,8 +2321,70 @@ function mpFinish(gaveUp){
   renderHints(); renderTabs();
   mpPres(); renderMp(true); renderLive();
   if (!gaveUp && mpRankOf(mpMe()) === 1) setTimeout(confetti, 200);
+  mpTryRecord(false);
 }
 
+// ---- battle stats (saved in this browser) ----
+const BS_KEY = "mcg-battle-v1";
+function bsLoad(){
+  let S = null; try { S = JSON.parse(localStorage.getItem(BS_KEY)); } catch(e) {}
+  return Object.assign({games:0, wins:0, podiums:0, rankSum:0, gaveUp:0, correct:0, skips:0,
+    race:{}, time:{}, golf:{}, h2h:{}, last:[]}, S || {});
+}
+function bsSave(S){ try { localStorage.setItem(BS_KEY, JSON.stringify(S)); } catch(e) {} }
+// count a finished game once: when everybody is done (or left), or forced when a new game starts / you leave
+function mpTryRecord(force){
+  if (!MP.gid || !MP.g || MP.recorded === MP.gid || MP.phase !== "done") return;
+  const g = MP.g, list = mpSort(mpEntries(MP.gid), g.type), others = list.filter(e => !e.me);
+  if (!others.length){ if (force) MP.recorded = MP.gid; return; }          // solo games don't count
+  if (!force && !others.every(e => e.fin != null || e.gu || e.gone)) return;
+  MP.recorded = MP.gid;
+  const S = bsLoad(), rank = list.findIndex(e => e.me) + 1, me = list[rank - 1], n = list.length, ok = !me.gu;
+  S.games++; S.rankSum += rank; S.correct += me.sv; S.skips += me.sk;
+  if (me.gu) S.gaveUp++;
+  if (ok && rank === 1) S.wins++;
+  if (ok && rank <= 3) S.podiums++;
+  let rec = "";
+  const k = String(g.type === "time" ? g.dur : g.goal);
+  if (ok && g.type === "race" && me.fin != null && (!S.race[k] || me.fin < S.race[k])){ S.race[k] = me.fin; rec = "new fastest race!"; }
+  if (ok && g.type === "time" && me.sv > (S.time[k] || 0)){ S.time[k] = me.sv; rec = "new time-limit record!"; }
+  if (ok && g.type === "golf" && me.fin != null && (S.golf[k] == null || mpScore(me) < S.golf[k])){ S.golf[k] = mpScore(me); rec = "new fewest-tries record!"; }
+  list.forEach((e, i) => {
+    if (e.me) return;
+    const key = e.nm.trim().toLowerCase().slice(0, 16) || "player";
+    const h = S.h2h[key] || (S.h2h[key] = {nm: e.nm, w: 0, l: 0});
+    h.nm = e.nm; if (i > rank - 1) h.w++; else h.l++;
+  });
+  S.last.unshift({at: Date.now(), type: g.type, rank, n, gu: !ok});
+  S.last = S.last.slice(0, 12);
+  bsSave(S);
+  const place = ["1st","2nd","3rd"][rank - 1] || rank + "th";
+  MP.recMsg = `📊 Saved to your battle stats: ${ok ? place + " of " + n : "gave up"}${rec ? " · 🏆 " + rec : ""}`;
+  renderMp(true);
+}
+function bsHTML(){
+  const S = bsLoad(), f = x => (Math.round(x * 10) / 10).toLocaleString("en");
+  if (!S.games) return `<p class="mp-info">No battles yet. Play a multiplayer game with at least one other player — your wins, records and head-to-head scores show up here.</p>`;
+  const tile = (v, l, hot, wide) => `<div class="stat${hot ? " hot" : ""}${wide ? " wide" : ""}"><span class="v">${v}</span><span class="l">${l}</span></div>`;
+  const rows = (obj, fmt, lab) => { const ks = Object.keys(obj).sort((a, b) => +a - +b);
+    return ks.length ? ks.map(k => `<div><span>${lab(k)}</span><span>${fmt(obj[k])}</span></div>`).join("") : `<div><span>–</span><span></span></div>`; };
+  const h2h = Object.values(S.h2h).sort((a, b) => (b.w + b.l) - (a.w + a.l)).slice(0, 8);
+  const typeIcon = {race:"🏁", time:"⏱", golf:"⛳"};
+  return `<div class="bs">
+    <div class="bs-tiles">${tile(S.games, "Battles")}${tile(S.wins, "Wins", true)}${tile(Math.round(S.wins / S.games * 100) + "%", "Win rate")}
+      ${tile(S.podiums, "Podiums")}${tile(f(S.rankSum / S.games), "Avg. place", false, true)}</div>
+    <div class="bs-best">
+      <div class="bs-card"><b>🏁 Fastest race</b>${rows(S.race, v => fmtTime(v / 1000), k => k + " correct")}</div>
+      <div class="bs-card"><b>⏱ Most in time limit</b>${rows(S.time, v => v + " ✓", k => durLabel(+k))}</div>
+      <div class="bs-card"><b>⛳ Fewest tries</b>${rows(S.golf, v => v + " pts", k => k + " answers")}</div>
+    </div>
+    ${h2h.length ? `<div><h3 style="margin-top:0">Head to head</h3><div class="bs-h2h">${h2h.map(h => `<div class="h2h"><span class="nm">vs ${esc(h.nm)}</span>
+      <span class="sc"><span class="w">${h.w}</span> : <span class="l">${h.l}</span></span>
+      <div class="bar"><i style="width:${(h.w / Math.max(1, h.w + h.l)) * 100}%"></i></div></div>`).join("")}</div></div>` : ""}
+    <div><h3 style="margin-top:0">Last battles</h3><div class="bs-last">${S.last.map(l => `<span class="${!l.gu && l.rank === 1 ? "w" : ""}">${typeIcon[l.type] || ""} ${l.gu ? "gave up" : "#" + l.rank + "/" + l.n}</span>`).join("")}</div></div>
+    <p class="mp-info" style="margin:0">${S.correct} correct answers and ${S.skips} skips in battles · ${S.gaveUp} given up. Saved only in this browser.</p>
+    <div class="bs-foot"><button type="button" data-act="bsreset">Reset battle stats</button></div></div>`;
+}
 // ---- leaderboard ----
 function mpMe(){ return {peer:"me", me:true, nm: myName, cl: MP.color, sv: MP.sv || 0, tr: MP.tr || 0, sk: MP.sk || 0, fin: MP.fin, gu: MP.gu, st: MP.phase}; }
 function mpScore(e){ return e.tr + e.sk * MP_SKIP_TRIES; }
@@ -2288,6 +2470,7 @@ function mpOnPeers(){
     const localStart = h.updatedAt + (game.startAt - game.sent);
     if (localStart > Date.now() - 1500 && MP_TYPES[game.type]) mpBegin(game, localStart);
   }
+  if (MP.phase === "done") mpTryRecord(false);
   renderMp(); renderLive();
 }
 
@@ -2333,6 +2516,7 @@ function renderMp(force){
     if (showGame){
       h += `<h3>${MP_TYPES[MP.g.type].icon} ${MP_TYPES[MP.g.type].name} · ${esc(MP_TYPES[MP.g.type].desc(MP.g))} · ${AREA_LABEL[MP.g.area]}</h3>` + mpBoardHTML(MP.gid, MP.g);
       if (MP.phase === "playing") h += `<div class="mp-row"><button type="button" data-act="giveup">🏳 Give up</button></div>`;
+      if (MP.recMsg && MP.phase === "done") h += `<div class="mp-rec">${esc(MP.recMsg)}</div>`;
     } else if (runningElse){
       const g = host.presence.game;
       h += `<h3>Game running</h3><p class="mp-info">You joined during a game — you will play in the next one.</p>` + mpBoardHTML(g.id, g);
@@ -2343,6 +2527,8 @@ function renderMp(force){
       else h += `<p class="mp-info">Waiting for the host to start …</p>`;
     }
   }
+  if (MP.phase === "off" || MP.phase === "lobby" || MP.phase === "done")
+    h += `<button type="button" class="bs-toggle" data-act="bstoggle"><span>📊 Battle stats</span><span>${bsOpen ? "▴ hide" : "▾ show"}</span></button>` + (bsOpen ? bsHTML() : "");
   if (roomState === "ok" && MP.phase !== "off") h += `<p class="mp-info" style="font-size:.72rem;opacity:.7">🔌 ${esc(mpDiag())}</p>`;
   if (h !== mpLastHTML || force){ mpLastHTML = h; pane.innerHTML = h; }
 }
@@ -2374,6 +2560,11 @@ $("mp").addEventListener("click", e => {
   else if (act === "leave") mpLeave();
   else if (act === "start") mpStart();
   else if (act === "takehost") mpBecomeHost();
+  else if (act === "bstoggle"){ bsOpen = !bsOpen; try { localStorage.setItem("mcg-bs-open", bsOpen ? "1" : ""); } catch(err) {} renderMp(true); }
+  else if (act === "bsreset"){
+    if (!b.dataset.armed){ b.dataset.armed = "1"; b.textContent = "Tap again to delete all battle stats"; return; }
+    try { localStorage.removeItem(BS_KEY); } catch(err) {} renderMp(true);
+  }
   else if (act === "giveup"){
     if (!b.dataset.armed){ b.dataset.armed = "1"; b.textContent = "Tap again to give up"; return; }
     mpFinish(true);
