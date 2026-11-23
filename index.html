@@ -443,6 +443,22 @@
   @keyframes cdFlash{from{opacity:.55}to{opacity:0}}
   @media (max-width:700px){ .cd-num{font-size:9rem} .cd-num.go{font-size:8rem} #cdNum{height:9.5rem} .cd-ready{font-size:3rem} .cd-mode{font-size:1.35rem} }
 
+  /* Solved answers during a multiplayer game */
+  .mplog{background:linear-gradient(180deg,#1f1a29,#18151f);border:2px solid #0b0d10;border-radius:14px;padding:10px 12px;margin:0 0 14px;
+    box-shadow:inset 3px 3px 0 rgba(255,255,255,.04), inset -3px -3px 0 rgba(0,0,0,.4)}
+  .mplog[hidden]{display:none}
+  .mplog-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:8px}
+  .mplog-h b{font-family:var(--font-display);font-weight:400;font-size:1.35rem;color:#cfaefc;letter-spacing:.03em}
+  .mplog-h span{color:var(--muted);font-size:.8rem}
+  .mplog-list{display:flex;flex-wrap:wrap;gap:6px}
+  .mpl{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:8px;font-weight:700;font-size:.86rem;
+    border:2px solid #0b0d10;box-shadow:inset 2px 2px 0 rgba(255,255,255,.18), inset -2px -2px 0 rgba(0,0,0,.3)}
+  .mpl.ok{background:linear-gradient(180deg,#46a955,#3a8c47)}
+  .mpl.skip{background:#2a2d35;color:var(--muted);text-decoration:line-through;text-decoration-color:rgba(255,255,255,.3)}
+  .mpl small{font-weight:500;opacity:.85;font-size:.72rem;text-decoration:none}
+  .mpl .ty{font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;opacity:.75}
+  .mpl.new{animation:mplNew .5s cubic-bezier(.16,1,.3,1) both}
+  @keyframes mplNew{from{opacity:0;transform:translateY(8px) scale(.85)}to{opacity:1;transform:none}}
   /* Battle stats */
   .bs-toggle{margin-top:14px;width:100%;text-align:left;display:flex;justify-content:space-between;align-items:center}
   .bs{margin-top:10px;display:flex;flex-direction:column;gap:12px}
@@ -523,6 +539,7 @@
   </table>
 </div>
 
+<div class="mplog" id="mpLog" hidden></div>
 <nav class="sections" id="sections" aria-label="More">
   <button type="button" data-pane="free">🎲 Just guess</button>
   <button type="button" data-pane="comp">⏱ Competition</button>
@@ -2175,6 +2192,7 @@ function mpLeave(){
   MP = {phase:"off", set: MP.set, note:null};
   mpBoard = {}; clearTimeout(cdHideT); $("mpCd").hidden = true; $("mpCd").dataset.gid = "";
   if (wasPlaying) newRound();
+  mpLogRender();
   renderTabs(); renderHints(); renderMp(true); renderLive();
 }
 function mpBecomeHost(){
@@ -2201,13 +2219,13 @@ function mpBegin(game, localStart){
   MP.g = {type: game.type, area: game.area, goal: game.goal, dur: game.dur};
   MP.gid = game.id; MP.start = localStart; MP.cdFrom = Date.now(); MP.phase = "countdown";
   MP.sv = 0; MP.tr = 0; MP.sk = 0; MP.pen = 0; MP.fin = null; MP.gu = null; MP.idx = 0; MP.lock = 0;
-  MP.seq = []; MP.used = new Set(); MP.rng = mulberry32(game.seed); MP.won = false;
+  MP.seq = []; MP.used = new Set(); MP.rng = mulberry32(game.seed); MP.won = false; MP.log = [];
   mpBoard = {};
   over = true; guesses = []; hints = []; $("inp").value = ""; $("inp").disabled = true; hideSuggest();
   $("msg").textContent = ""; $("msg").className = "msg"; render(); renderHints();
   showPane("mp");
   clearInterval(mpTick); mpTick = setInterval(mpUpdate, 100);
-  mpPres(); mpUpdate(); renderMp(true);
+  mpPres(); mpUpdate(); renderMp(true); mpLogRender();
 }
 function mpUpdate(){
   const now = Date.now();
@@ -2227,6 +2245,25 @@ function mpUpdate(){
     }
   }
   renderLive();
+}
+// ---- list of your answers in this game, shown under the table ----
+function mpLogAdd(ok){
+  MP.log = MP.log || [];
+  MP.log.push({n: target[0], m: mode, t: guesses.length, ok, at: Date.now() - MP.start});
+  mpLogRender(true);
+}
+function mpLogRender(fresh){
+  const el = $("mpLog");
+  const show = MP.g && MP.log && MP.log.length && (MP.phase === "playing" || MP.phase === "done");
+  if (!show){ el.hidden = true; el.innerHTML = ""; return; }
+  const ok = MP.log.filter(x => x.ok).length, sk = MP.log.length - ok;
+  el.hidden = false;
+  el.innerHTML = `<div class="mplog-h"><b>✅ Your answers this game</b><span>${ok} correct${sk ? " · " + sk + " skipped" : ""}</span></div>
+    <div class="mplog-list">${MP.log.map((x, i) => {
+      const last = fresh && i === MP.log.length - 1;
+      return `<span class="mpl ${x.ok ? "ok" : "skip"}${last ? " new" : ""}" title="${x.ok ? "Guessed" : "Skipped"} after ${fmtTime(x.at / 1000)}">
+        <span class="ty">${esc(MODES[x.m].label)}</span>${x.ok ? "✓" : "⏭"} ${esc(x.n)} <small>${x.ok ? x.t + (x.t === 1 ? " try" : " tries") : "skipped"}</small></span>`;
+    }).join("")}</div>`;
 }
 // ---- start animation: intro with the players, then 3 · 2 · 1 · GO! ----
 const CD_COLORS = {"3":"#ff6b5c", "2":"#f2b134", "1":"#5fd3d6"};
@@ -2280,6 +2317,7 @@ function mpCdGo(){
 }
 // a correct answer during a game
 function mpWin(){
+  mpLogAdd(true);
   MP.tr += guesses.length; MP.sv++; MP.idx++;
   const g = MP.g;
   if (g.type === "race" && MP.sv >= g.goal) return mpFinish(false);
@@ -2291,6 +2329,7 @@ function mpSkip(){
   if (over || MP.phase !== "playing") return;
   over = true; $("inp").disabled = true; hideSuggest();
   const g = MP.g, t = target[0];
+  mpLogAdd(false);
   MP.tr += guesses.length; MP.sk++; MP.idx++;
   if (g.type === "race") MP.pen += MP_SKIP_RACE;
   const pen = g.type === "race" ? `+${MP_SKIP_RACE / 1000} s` : g.type === "golf" ? `+${MP_SKIP_TRIES} tries` : `locked for ${MP_SKIP_LOCK / 1000} s`;
@@ -2321,7 +2360,7 @@ function mpFinish(gaveUp){
   renderHints(); renderTabs();
   mpPres(); renderMp(true); renderLive();
   if (!gaveUp && mpRankOf(mpMe()) === 1) setTimeout(confetti, 200);
-  mpTryRecord(false);
+  mpTryRecord(false); mpLogRender();
 }
 
 // ---- battle stats (saved in this browser) ----
