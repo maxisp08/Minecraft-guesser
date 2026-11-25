@@ -459,6 +459,79 @@
   .mpl .ty{font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;opacity:.75}
   .mpl.new{animation:mplNew .5s cubic-bezier(.16,1,.3,1) both}
   @keyframes mplNew{from{opacity:0;transform:translateY(8px) scale(.85)}to{opacity:1;transform:none}}
+  .mpl .tm{font-weight:600;font-size:.72rem;opacity:.9;font-variant-numeric:tabular-nums}
+  .mplog.done .mpl{cursor:pointer;transition:transform .12s ease, filter .12s ease}
+  .mplog.done .mpl:hover{transform:translateY(-2px);filter:brightness(1.12)}
+  .mplog-tip{color:var(--muted);font-size:.78rem;margin-top:8px}
+  .term-sum{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+  .term-sum span{background:#15171c;border:1px solid var(--line);border-radius:999px;padding:5px 11px;font-size:.85rem;font-weight:600}
+  #termModal .modal-box{width:min(1200px,96vw);background:linear-gradient(180deg,#221d2c,#1a1820 140px,#1b1e25);border-color:#0b0d10;
+    box-shadow:0 30px 80px rgba(0,0,0,.65), 0 0 0 1px rgba(176,124,240,.25), inset 3px 3px 0 rgba(255,255,255,.05);animation:ttIn .32s cubic-bezier(.16,1,.3,1) both}
+  #termModal{backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px)}
+  #termModal .modal-head{align-items:flex-start;margin-bottom:14px}
+  #termTitle{display:flex;align-items:center;gap:14px;font-family:var(--font-body);text-shadow:none;margin:0;min-width:0}
+  .tt-ic{flex:0 0 52px;height:52px;display:grid;place-items:center;border-radius:10px;font-size:1.7rem;font-weight:800;color:#0f1a10;
+    border:2px solid #0b0d10;box-shadow:inset 3px 3px 0 rgba(255,255,255,.3), inset -3px -3px 0 rgba(0,0,0,.25)}
+  .tt-ic.ok{background:linear-gradient(180deg,#56bb65,#3a8c47)} .tt-ic.skip{background:#3a3f4a;color:#cfd3db}
+  .tt-txt{display:flex;flex-direction:column;min-width:0}
+  .tt-name{font-family:var(--font-display);font-weight:400;font-size:2.3rem;line-height:1;color:#f1f3f6;text-shadow:3px 3px 0 #000a;overflow-wrap:anywhere}
+  .tt-sub{color:var(--muted);font-size:.85rem;font-weight:500;margin-top:4px}
+  .tt-tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:14px}
+  .tt-tile{display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto;column-gap:10px;align-items:center;background:#15171c;border:2px solid #0b0d10;
+    border-radius:10px;padding:8px 12px;box-shadow:inset 2px 2px 0 rgba(255,255,255,.05), inset -2px -2px 0 rgba(0,0,0,.35)}
+  .tt-tile .tt-i{grid-row:1/3;font-size:1.4rem}
+  .tt-tile b{font-family:var(--font-display);font-weight:400;font-size:1.7rem;line-height:1;color:#cfaefc;font-variant-numeric:tabular-nums}
+  .tt-tile span:last-child{color:var(--muted);font-size:.75rem}
+  .tt-label{font-family:var(--font-display);font-size:1.2rem;color:var(--muted);letter-spacing:.04em;margin:0 0 4px 4px}
+  .tt-label span{font-family:var(--font-body);font-size:.72rem;opacity:.8;margin-left:6px;letter-spacing:0}
+  #termBody tbody tr{animation:ttRow .35s cubic-bezier(.16,1,.3,1) both}
+  .tt-no{display:block;font-size:.62rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:1px}
+  #termBody tr.tt-ans td.name{color:var(--accent)}
+  #termBody tr.tt-ans .tt-no{color:#8fe39a}
+  #termBody tr.tt-ans td:not(.name){box-shadow:inset 0 1px 0 rgba(255,255,255,.12), inset 0 -3px 0 rgba(0,0,0,.18), 0 0 0 2px rgba(143,227,154,.55)}
+  @keyframes ttIn{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
+  @keyframes ttRow{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:none}}
+  #termBody .wrap{margin-bottom:0;overflow:visible}
+  #termBody table{min-width:0;width:100%;border-spacing:4px}
+  #termBody th{font-size:.6rem;padding:0 2px 2px}
+  #termBody td{padding:7px 4px;font-size:.78rem;border-radius:8px}
+  #termBody td.name{max-width:130px;white-space:normal}
+  #termBody .chip{white-space:normal;font-size:.7rem;padding:2px 5px}
+  #termBody .sub{font-size:.6rem}
+  /* small screens: every guess as a compact card, two values per line */
+  @media (max-width:760px){
+    #termModal .modal-box{padding:12px}
+    #termModal .modal-head{margin-bottom:8px} .tt-name{font-size:1.6rem} .tt-ic{flex-basis:40px;height:40px;font-size:1.25rem} .tt-sub{font-size:.72rem}
+    .tt-tiles{gap:5px;margin-bottom:8px} .tt-tile{padding:6px 8px;column-gap:6px} .tt-tile .tt-i{font-size:1rem} .tt-tile b{font-size:1.25rem} .tt-tile span:last-child{font-size:.62rem}
+    #termBody tr.tt-ans{border:2px solid rgba(143,227,154,.6)} #termBody tr.tt-ans td:not(.name){box-shadow:none}
+    #termBody tr.tt-ans.reveal{border:2px dashed var(--accent)}
+    .tt-no{display:inline;margin:0 6px 0 0}
+    #termModal{padding-top:12px}
+    #termBody table,#termBody tbody,#termBody tr,#termBody td{display:block;width:100%}
+    #termBody thead{display:none}
+    #termBody tbody{display:flex;flex-direction:column;gap:6px}
+    #termBody tr{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3px;background:#15171c;border:1px solid var(--line);border-radius:10px;padding:6px}
+    #termBody tr.reveal{border:2px dashed var(--accent)}
+    #termBody tr.reveal td:not(.name){outline:none}
+    #termBody td{margin:0;padding:4px 5px;font-size:.68rem;line-height:1.25;text-align:left;display:flex;flex-direction:column;gap:2px;min-width:0}
+    #termBody td::before{content:attr(data-label);font-size:.52rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;opacity:.85}
+    #termBody td.name{grid-column:1/-1;position:static;max-width:none;font-size:.88rem;padding:0 2px 2px;background:transparent;box-shadow:none}
+    #termBody td.name::before{content:none}
+    #termBody .vals{display:flex;flex-wrap:wrap;gap:3px}
+    #termBody .chip{display:inline-block;margin:0;font-size:.62rem;padding:1px 4px}
+    #termBody .sub{display:none}
+    .term-sum{gap:5px;margin-bottom:8px} .term-sum span{font-size:.75rem;padding:4px 9px}
+    #termBody .arrow{margin-left:2px}
+  }
+  /* "player finished" pop-ups */
+  .mptoasts{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:60;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none;width:min(440px,92vw)}
+  .mptoast{display:flex;align-items:center;gap:10px;width:100%;background:#1b1e25;border:2px solid var(--amy);border-radius:12px;padding:10px 14px;font-weight:700;
+    box-shadow:0 14px 40px rgba(0,0,0,.55), inset 3px 3px 0 rgba(255,255,255,.05);animation:toastIn .4s cubic-bezier(.16,1,.3,1) both}
+  .mptoast i{flex:0 0 16px;height:16px;border-radius:3px}
+  .mptoast small{display:block;color:var(--muted);font-weight:500;font-size:.8rem}
+  .mptoast.out{animation:toastOut .35s ease forwards}
+  @keyframes toastIn{from{opacity:0;transform:translateY(-16px) scale(.96)}to{opacity:1;transform:none}}
+  @keyframes toastOut{to{opacity:0;transform:translateY(-12px)}}
   /* Battle stats */
   .bs-toggle{margin-top:14px;width:100%;text-align:left;display:flex;justify-content:space-between;align-items:center}
   .bs{margin-top:10px;display:flex;flex-direction:column;gap:12px}
@@ -540,6 +613,10 @@
 </div>
 
 <div class="mplog" id="mpLog" hidden></div>
+<div class="mptoasts" id="mpToasts" aria-live="polite"></div>
+<div class="modal" id="termModal" hidden><div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="termTitle">
+  <div class="modal-head"><h2 id="termTitle"></h2><button type="button" id="btnTermClose" aria-label="Close">✕</button></div>
+  <div id="termBody"></div></div></div>
 <nav class="sections" id="sections" aria-label="More">
   <button type="button" data-pane="free">🎲 Just guess</button>
   <button type="button" data-pane="comp">⏱ Competition</button>
@@ -1213,7 +1290,7 @@ it("Netherite Chestplate","W",1,1,0,"-","1.16");
 it("Netherite Leggings","W",1,1,0,"-","1.16");
 it("Netherite Boots","W",1,1,0,"-","1.16");
 it("Turtle Shell","W",1,1,1,"-","1.13");
-it("Elytra","T",1,0,0,"K","1.9");
+it("Elytra","T",1,0,0,"-","1.9");
 it("Leather Horse Armor","W",1,1,1,"H","1.14");
 it("Iron Horse Armor","W",1,0,0,"K","1.6");
 it("Golden Horse Armor","W",1,0,0,"K","1.6");
@@ -1444,6 +1521,7 @@ function find(name){ return MODES[mode].data.find(r => r[0].toLowerCase() === na
 function newRound(){
   abandonRound();
   if (MP.phase === "playing"){
+    MP.roundStart = Date.now();
     const [md, k] = mpTargetAt(MP.idx);
     if (mode !== md){ mode = md; renderTabs(); renderHead(); }
     target = MODES[mode].data[k];
@@ -2232,7 +2310,7 @@ function mpBegin(game, localStart){
   MP.g = {type: game.type, area: game.area, goal: game.goal, dur: game.dur};
   MP.gid = game.id; MP.start = localStart; MP.cdFrom = Date.now(); MP.phase = "countdown";
   MP.sv = 0; MP.tr = 0; MP.sk = 0; MP.pen = 0; MP.fin = null; MP.gu = null; MP.idx = 0; MP.lock = 0;
-  MP.seq = []; MP.used = new Set(); MP.rng = mulberry32(game.seed); MP.won = false; MP.log = [];
+  MP.seq = []; MP.used = new Set(); MP.rng = mulberry32(game.seed); MP.won = false; MP.log = []; MP.seenFin = {};
   mpBoard = {};
   over = true; guesses = []; hints = []; $("inp").value = ""; $("inp").disabled = true; hideSuggest();
   $("msg").textContent = ""; $("msg").className = "msg"; render(); renderHints();
@@ -2262,21 +2340,82 @@ function mpUpdate(){
 // ---- list of your answers in this game, shown under the table ----
 function mpLogAdd(ok){
   MP.log = MP.log || [];
-  MP.log.push({n: target[0], m: mode, t: guesses.length, ok, at: Date.now() - MP.start});
+  MP.log.push({n: target[0], m: mode, t: guesses.length, ok, at: Date.now() - MP.start,
+               d: Date.now() - (MP.roundStart || MP.start), gs: guesses.map(r => r[0])});
   mpLogRender(true);
 }
 function mpLogRender(fresh){
   const el = $("mpLog");
   const show = MP.g && MP.log && MP.log.length && (MP.phase === "playing" || MP.phase === "done");
   if (!show){ el.hidden = true; el.innerHTML = ""; return; }
-  const ok = MP.log.filter(x => x.ok).length, sk = MP.log.length - ok;
-  el.hidden = false;
+  const ok = MP.log.filter(x => x.ok).length, sk = MP.log.length - ok, done = MP.phase === "done";
+  el.hidden = false; el.classList.toggle("done", done);
   el.innerHTML = `<div class="mplog-h"><b>✅ Your answers this game</b><span>${ok} correct${sk ? " · " + sk + " skipped" : ""}</span></div>
     <div class="mplog-list">${MP.log.map((x, i) => {
       const last = fresh && i === MP.log.length - 1;
-      return `<span class="mpl ${x.ok ? "ok" : "skip"}${last ? " new" : ""}" title="${x.ok ? "Guessed" : "Skipped"} after ${fmtTime(x.at / 1000)}">
-        <span class="ty">${esc(MODES[x.m].label)}</span>${x.ok ? "✓" : "⏭"} ${esc(x.n)} <small>${x.ok ? x.t + (x.t === 1 ? " try" : " tries") : "skipped"}</small></span>`;
-    }).join("")}</div>`;
+      const tag = done ? "button" : "span";
+      return `<${tag}${done ? ` type="button" data-term="${i}"` : ""} class="mpl ${x.ok ? "ok" : "skip"}${last ? " new" : ""}" title="${done ? "Show your guesses" : (x.ok ? "Guessed" : "Skipped")}">
+        <span class="ty">${esc(MODES[x.m].label)}</span>${x.ok ? "✓" : "⏭"} ${esc(x.n)}
+        <small>${x.ok ? x.t + (x.t === 1 ? " try" : " tries") : "skipped"}</small><span class="tm">⏱ ${fmtTime((x.d || 0) / 1000)}</span></${tag}>`;
+    }).join("")}</div>${done ? `<div class="mplog-tip">👆 Tap an answer to see your guesses for it.</div>` : ""}`;
+}
+// show the guesses you made for one answer of the finished game
+function mpTermOpen(i){
+  const x = MP.log && MP.log[i]; if (!x) return;
+  const sm = mode, st = target;
+  mode = x.m; target = MODES[mode].data.find(r => r[0] === x.n);
+  const rows = (x.gs || []).map(n => MODES[mode].data.find(r => r[0] === n)).filter(Boolean);
+  let body = rows.slice().reverse().map(r => rowHTML(r, false)).join("");
+  if (!x.ok) body = rowHTML(target, true) + body;
+  const head = "<th></th>" + MODES[mode].cols.map(c => `<th>${c.l}</th>`).join("");
+  mode = sm; target = st;
+  $("termTitle").innerHTML = `<span class="tt-ic ${x.ok ? "ok" : "skip"}">${x.ok ? "✓" : "⏭"}</span>
+    <span class="tt-txt"><span class="tt-name">${esc(x.n)}</span><span class="tt-sub">${esc(MODES[x.m].label)} · ${x.ok ? "solved" : "skipped"} · answer ${i + 1} of this game</span></span>`;
+  const tile = (ic, v, l) => `<div class="tt-tile"><span class="tt-i">${ic}</span><b>${v}</b><span>${l}</span></div>`;
+  $("termBody").innerHTML = `<div class="tt-tiles">
+      ${tile("🎯", x.ok ? x.t : "–", x.ok ? (x.t === 1 ? "try" : "tries") : "skipped")}
+      ${tile("⏱", fmtTime((x.d || 0) / 1000), "for this one")}
+      ${tile("🕒", fmtTime((x.at || 0) / 1000), "into the game")}</div>
+    ${body ? `<div class="tt-label">Your guesses <span>newest first · the answer is marked</span></div><div class="wrap"><table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>` : `<p class="mp-info">No guesses.</p>`}`;
+  // number the guesses and mark the answer row
+  const trs = [...$("termBody").querySelectorAll("tbody tr")];
+  trs.forEach((tr, k) => {
+    const n = tr.querySelector("td.name"); if (!n) return;
+    const isAns = tr.classList.contains("reveal") || (x.ok && k === 0);
+    tr.classList.toggle("tt-ans", isAns);
+    tr.style.animationDelay = (k * 0.05) + "s";
+    const no = x.ok ? rows.length - k : (k === 0 ? 0 : rows.length - k + 1);
+    n.insertAdjacentHTML("afterbegin", `<span class="tt-no">${isAns ? (x.ok ? "✓ Answer" : "Answer") : "#" + no}</span>`);
+  });
+  $("termModal").hidden = false; $("btnTermClose").focus();
+}
+function mpTermClose(){ $("termModal").hidden = true; }
+$("mpLog").addEventListener("click", e => { const b = e.target.closest("[data-term]"); if (b) mpTermOpen(+b.dataset.term); });
+$("btnTermClose").onclick = mpTermClose;
+$("termModal").addEventListener("click", e => { if (e.target === $("termModal")) mpTermClose(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("termModal").hidden) mpTermClose(); });
+
+// ---- pop-up when another player finishes ----
+function mpToast(html, color){
+  const box = $("mpToasts"), t = document.createElement("div");
+  t.className = "mptoast"; t.innerHTML = `<i style="background:${color}"></i><div>${html}</div>`;
+  box.appendChild(t);
+  while (box.children.length > 3) box.firstChild.remove();
+  setTimeout(() => { t.classList.add("out"); setTimeout(() => t.remove(), 360); }, 3800);
+}
+function mpCheckFinishers(){
+  if (!MP.gid || !MP.g || !(MP.phase === "playing" || MP.phase === "done")) return;
+  MP.seenFin = MP.seenFin || {};
+  const list = mpSort(mpEntries(MP.gid), MP.g.type);
+  list.forEach((e, i) => {
+    if (e.me || e.gone || MP.seenFin[e.peer]) return;
+    if (e.fin == null && !e.gu) return;
+    MP.seenFin[e.peer] = true;
+    const col = MP_COLORS[e.cl] || MP_COLORS[0];
+    if (e.gu) return mpToast(`${esc(e.nm)} gave up`, col);
+    const score = mpScoreText(e, MP.g);
+    mpToast(`🏁 ${esc(e.nm)} finished!<small>${["🥇","🥈","🥉"][i] || "#" + (i + 1)} place so far · ${esc(score)}</small>`, col);
+  });
 }
 // ---- start animation: intro with the players, then 3 · 2 · 1 · GO! ----
 const CD_COLORS = {"3":"#ff6b5c", "2":"#f2b134", "1":"#5fd3d6"};
@@ -2523,6 +2662,7 @@ function mpOnPeers(){
     if (localStart > Date.now() - 1500 && MP_TYPES[game.type]) mpBegin(game, localStart);
   }
   if (MP.phase === "done") mpTryRecord(false);
+  mpCheckFinishers();
   renderMp(); renderLive();
 }
 
